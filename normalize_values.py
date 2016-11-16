@@ -29,11 +29,11 @@ for file in os.listdir('Audio_features/.'):
 					values=data.split(",")
 					output_file.write(values[0]+",")
 					if "--undefined--" not in values[1]:
-						output_file.write(str(((float(values[1])-min_pitch)/(max_pitch-min_pitch))*100)+",")
+						output_file.write(str(((float(values[1])-min_pitch)/(max_pitch-min_pitch)))+",")
 					else:
 						output_file.write("--undefined--,")
 					if "--undefined--" not in values[2]:
-						output_file.write(str(((float(values[2])-min_intensity)/(max_intensity-min_intensity))*100)+"\n")
+						output_file.write(str(((float(values[2])-min_intensity)/(max_intensity-min_intensity)))+"\n")
 					else:
 						output_file.write("--undefined--\n")
 			print "DONE"
