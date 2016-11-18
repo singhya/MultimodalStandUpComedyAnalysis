@@ -41,14 +41,14 @@ for i in range(0,55):
 	anova_list[i][3].append(list())
 	anova_list[i][3].append(list())
 
-get_video_name_file = open('test_segment.csv', 'r')
-video_input_data=((get_video_name_file.read()).split("\n"))[1:]
+get_video_name_file = open('segment_annotation.csv', 'r')
+video_input_data=((get_video_name_file.read()).splitlines())[1:]
 for video_data in video_input_data:
 	video_data=video_data.strip()
 	if video_data!="":
 		video_data_list=video_data.split(",")
 		video_name=video_data_list[0].strip()
-		print video_name
+		print video_name,".......",
 
 		start_frame=int(video_data_list[6].strip())
 		end_frame=int(video_data_list[7].strip())
@@ -63,9 +63,10 @@ for video_data in video_input_data:
 			if fnmatch.fnmatch(openface_file, video_name+'_Video*'):
 				name_of_input_file=openface_file
 				break
+		print name_of_input_file
 
 		openface_input_file=open('NormalizedOpenFaceOutput/'+name_of_input_file , 'r')
-		inp=(openface_input_file.read().split("\n"))[1:]
+		inp=(openface_input_file.read().splitlines())[1:]
 
 		for openface_data in inp:
 			openface_data_new=openface_data.strip()
