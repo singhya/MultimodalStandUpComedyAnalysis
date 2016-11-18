@@ -9,8 +9,9 @@ for file in os.listdir('Laughter_annotation/.'):
 		video_name=(file.split('_'))[0]
 		print video_name+".....",
 		input_file=open('Laughter_annotation/'+file , 'r')
-		input_data=((input_file.read()).split("\n"))[1:]
-
+		input_data=((input_file.read()).splitlines())
+		input_data=input_data[1:]
+		print len(input_data),"     ",
 		for audio_file in os.listdir('Normalized_Audio_features/.'):
 			if fnmatch.fnmatch(audio_file, video_name+'_Audio.txt'):
 				name_of_input_file=audio_file
@@ -19,7 +20,7 @@ for file in os.listdir('Laughter_annotation/.'):
 
 		audio_feature_input_file=open('Normalized_Audio_features/'+name_of_input_file , 'r')
 		inp=(audio_feature_input_file.read().split("\n"))[1:]
-
+		print len(inp),"   ",
 		lineNumber=1
 		old_laughter_start_segment_s=0
 		old_laughter_end_segment_s=0
@@ -29,7 +30,6 @@ for file in os.listdir('Laughter_annotation/.'):
 			if row!="":
 				row=row.strip()
 				data=row.split(',')
-
 
 				if lineNumber==1:
 					new_start_segment_s=0
@@ -42,7 +42,6 @@ for file in os.listdir('Laughter_annotation/.'):
 				old_laughter_start_segment_s=float(data[0])
 				old_laughter_end_segment_s=float(data[1])
 					
-
 				pitch = list()
 				intensity = list()
 				for audio_data in inp:
