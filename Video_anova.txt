@@ -644,3 +644,62 @@ frown_standard_deviation =
 0.0726824764615(0.0648685043466)
 0.0957879109165(0.0685360454075)
 0.0848798501754(0.071957830955)
+
+
+
+
+
+
+
+
+
+
+
+
+AUs:
+
+0	Neutral face	
+1	Inner Brow Raiser	frontalis (pars medialis)
+2	Outer Brow Raiser	frontalis (pars lateralis)
+4	Brow Lowerer	depressor glabellae, depressor supercilii, corrugator supercilii
+5	Upper Lid Raiser	levator palpebrae superioris, superior tarsal muscle
+6	Cheek Raiser	orbicularis oculi (pars orbitalis)
+7	Lid Tightener	orbicularis oculi (pars palpebralis)
+8	Lips Toward Each Other	orbicularis oris
+9	Nose Wrinkler	levator labii superioris alaeque nasi
+10	Upper Lip Raiser	levator labii superioris, caput infraorbitalis
+11	Nasolabial Deepener	zygomaticus minor
+12	Lip Corner Puller	zygomaticus major
+13	Sharp Lip Puller	levator anguli oris (also known as caninus)
+14	Dimpler	buccinator
+15	Lip Corner Depressor	depressor anguli oris (also known as triangularis)
+16	Lower Lip Depressor	depressor labii inferioris
+17	Chin Raiser	mentalis
+18	Lip Pucker	incisivii labii superioris and incisivii labii inferioris
+19	Tongue Show	
+20	Lip Stretcher	risorius w/ platysma
+21	Neck Tightener	platysma
+22	Lip Funneler	orbicularis oris
+23	Lip Tightener	orbicularis oris
+24	Lip Pressor	orbicularis oris
+25	Lips Part	depressor labii inferioris, or relaxation of mentalis or orbicularis oris
+26	Jaw Drop	masseter; relaxed temporalis and internal pterygoid
+27	Mouth Stretch	pterygoids, digastric
+28	Lip Suck	orbicularis oris
+29	Jaw Thrust	
+30	Jaw Sideways	
+31	Jaw Clencher	masseter
+32	[Lip] Bite	
+33	[Cheek] Blow	
+34	[Cheek] Puff	
+35	[Cheek] Suck	
+36	[Tongue] Bulge	
+37	Lip Wipe	
+38	Nostril Dilator	nasalis (pars alaris)
+39	Nostril Compressor	nasalis (pars transversa) and depressor septi nasi
+41	Glabella Lowerer	Separate Strand of AU 4: depressor glabellae (aka procerus)
+42	Inner Eyebrow Lowerer	Separate Strand of AU 4: depressor supercilii
+43	Eyes Closed	Relaxation of levator palpebrae superioris
+44	Eyebrow Gatherer	Separate Strand of AU 4: corrugator supercilii
+45	Blink	Relaxation of levator palpebrae superioris; contraction of orbicularis oculi (pars palpebralis)
+46	Wink	orbicularis oculi
