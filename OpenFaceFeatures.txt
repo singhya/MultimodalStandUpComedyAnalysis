@@ -1,0 +1,170 @@
+On analyzing various Action Unit intensities we observed that less mean intensities of facial expressions such as Dimpler (AU14), Lid Tightener (AU07), Brow Lowerer (AU04), Inner Brow Raiser (AU01), Outer Brow Raiser (AU02) and Lip Tightener (AU23) contribute to more laughter from the audience. We took the mean in these intensities for each segment and ran ANOVA test and found p-value of 1.75389E-29, 9.62973E-12, 5.84384E-08, 3.39802E-05, 8.32914E-05 \& 0.001244 respectively. Box plots for AU04, AU14 and AU01 are given below:
+
+Combinations of facial Action Units signify emotion such as simultaneous occurrences of AU04, AU07 and AU23 indicate anger; AU01, AU04 and AU15 indicate sadness. Our analysis show that less intensities of AUs contributing to anger or sadness contribute to more laughter from the audience.
+
+Larger variations in gaze (along y-axes) of the comedian contribute to more laughter from the audience. The same was observed for pose (rotation of the head along y-axis and z-axis). We took standard deviation in gaze_0_y, pose_Ry and pose_Rz for each segment and ran ANOVA test and found p-value of 1.61597E-05, 6.38000E-11 \& 7.32818E-07 respectively. Box plot for these are given below:
+
+Although we did not think about gaze and pose features initially, these results allow us to use these features in predictive analysis along with Action Unit features.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Less anger in big laughter
+AU 4+7+23
+
+Less sadness in big laughter
+AU 1+4+15
+
+
+
+
+
+DONE
+
+6.3800E-11
+pose_Ry_standard_deviation = 
+0.184(0.1206)
+0.228(0.1167)
+0.236(0.1274)
+
+
+
+
+DONE
+
+7.3281E-07
+pose_Rz_standard_deviation = 
+0.078(0.0548)
+0.085(0.0551)
+0.099(0.0667)
+
+
+
+
+
+DONE
+
+1.6159689988e-05
+gaze_0_y_standard_deviation = 
+0.0484651850166(0.0219546393712)
+0.0501545191539(0.0295421615046)
+0.0573276339584(0.0368195832132)
+
+
+
+
+
+
+
+2.06365490806e-07
+gaze_1_y_standard_deviation = 
+0.0499911742959(0.0226120989737)
+0.0517605525395(0.0313308749947)
+0.0607576832048(0.0377089113358)
+
+
+
+
+
+
+Inner Brow Raiser
+3.39802398063e-05
+AU01_r_mean = 
+0.702802735016(0.70878838184) more
+0.642214023835(0.643750666898)
+0.517163266924(0.509245002732) less
+
+
+
+Brow Lowerer
+5.84384510295e-08
+AU04_c_mean = 
+0.36297799012(0.318757507781)
+0.348463052447(0.288807216248)
+0.26056985461(0.250306725231)
+
+
+
+
+Lid Tightener
+9.6297E-12
+AU07_r_mean = 
+0.712(0.5036)
+0.532(0.4547)
+0.502(0.4701)
+
+
+
+
+
+Dimpler
+1.7538E-29
+AU14_r_mean = 
+0.571(0.4548)
+0.388(0.3775)
+0.278(0.2833)
+
+3.69405252474e-23
+AU14_c_mean = 
+0.505724078236(0.319368023735)
+0.372237314112(0.301857381371)
+0.306027754892(0.263659469264)
+
+
+
+
+Lip Tightener
+0.00124400653344
+AU23_r_mean = 
+0.382(0.3490)
+0.333(0.2949)
+0.308(0.2792)
+
+1.06562800374e-39
+AU23_c_mean = 
+0.316392588711(0.275878252458)
+0.186740321498(0.220926352545)
+0.110779374014(0.168770399725)
+
+
+
+
+Outer Brow Raiser
+8.3291440047e-05
+AU02_r_mean = 
+0.276533876108(0.409223056148)
+0.206084512037(0.295655794485)
+0.185641028021(0.269219307823)
+
+
+
+
+
+
+
+
+
+
+///REJECT
+Surprise	1+2+26
+Decreasing in big laughter (but 26 increasing)
+
+
+
+
+///REJECT
+Fear	1+2+4+5+7+20+26	
+Decreasing in big laughter for 1,2,4,7
+except 5,20,26 
