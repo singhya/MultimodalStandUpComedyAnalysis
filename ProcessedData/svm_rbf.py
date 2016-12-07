@@ -40,11 +40,12 @@ def late_fusion(audio_input_df,
         df0.index = df1.index 
         early_fusion_df = pd.concat(early_fusion_frame, axis=1)
         early_fusion_features = audio_features + video_features + transcript_features
-        
         [early_fusion_prediction,early_fusion_accuracy] = get_prediction(early_fusion_df,
-                                                                        early_fusion_features,
-                                                                        train_index,
-                                                                        test_index)
+                                                                         early_fusion_features,
+                                                                         train_index,
+                                                                         test_index,
+                                                                         experiment,
+                                                                         'early_fusion')
 
         print("Early fusion : ",early_fusion_accuracy)
         
@@ -53,7 +54,9 @@ def late_fusion(audio_input_df,
         [audio_prediction,audio_accuracy] = get_prediction(audio_input_df,
                                                            audio_features,
                                                            train_index,
-                                                           test_index)
+                                                           test_index,
+                                                           experiment,
+                                                           'audio')
         
         print('Audio: ',audio_accuracy)
         
@@ -62,7 +65,9 @@ def late_fusion(audio_input_df,
         [video_predition, video_accuracy] = get_prediction(video_input_df,
                                                            video_features,
                                                            train_index,
-                                                           test_index)
+                                                           test_index,
+                                                           experiment,
+                                                           'video')
         print('Video: ',video_accuracy)
         
         #transcript prediction
@@ -70,9 +75,12 @@ def late_fusion(audio_input_df,
         [transcript_prediction,transcript_accuracy] = get_prediction(transcript_input_df,
                                                                      transcript_features,
                                                                      train_index,
-                                                                     test_index)
+                                                                     test_index,
+                                                                     experiment,
+                                                                     'transcript')
         print('Transcript: ',transcript_accuracy)
         
+
         
         late_fusion_list = []
         for i in range(len(audio_prediction)):
@@ -114,7 +122,7 @@ def late_fusion(audio_input_df,
         
         print('+'*20)
         
-def get_prediction(input_df,features,train_index,test_index):
+def get_prediction(input_df,features,train_index,test_index,experiment,modality):
     
     #print('shape of the input dataframe : ', input_df.shape)
     #print('number of features : ', len(features))
@@ -188,7 +196,16 @@ def get_prediction(input_df,features,train_index,test_index):
     print "F1:  ",f1
     print con_matrix
 
-
+    confPred = pd.DataFrame(clf.decision_function(test_data[features].values))
+    td_s = pd.Series(list(test_data.video_num),index=confPred.index)    
+    #print('video_number : ', list(td_s))
+    confPred["video_number"]=td_s
+    confPred["prediction"] = test_results
+    #confPred.columns = ['video_number','0','1','2','prediction']   
+    #print td_s
+    writer = pd.ExcelWriter("./conf_rbf_SVM"+'_' +modality+ '_' + str(experiment) + ".xlsx")
+    confPred.to_excel(writer,'Sheet1')
+    writer.save()
 
 
     return [test_results,accuracy]       

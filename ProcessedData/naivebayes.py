@@ -40,9 +40,11 @@ def late_fusion(audio_input_df,
         early_fusion_features = audio_features + video_features + transcript_features
         
         [early_fusion_prediction,early_fusion_accuracy] = get_prediction(early_fusion_df,
-                                                                        early_fusion_features,
-                                                                        train_index,
-                                                                        test_index)
+                                                                         early_fusion_features,
+                                                                         train_index,
+                                                                         test_index,
+                                                                         experiment,
+                                                                         'early_fusion')
 
         print("Early fusion : ",early_fusion_accuracy)
         
@@ -51,16 +53,20 @@ def late_fusion(audio_input_df,
         [audio_prediction,audio_accuracy] = get_prediction(audio_input_df,
                                                            audio_features,
                                                            train_index,
-                                                           test_index)
+                                                           test_index,
+                                                           experiment,
+                                                           'audio')
         
         print('Audio: ',audio_accuracy)
         
         #video prediction
-       
+        
         [video_predition, video_accuracy] = get_prediction(video_input_df,
                                                            video_features,
                                                            train_index,
-                                                           test_index)
+                                                           test_index,
+                                                           experiment,
+                                                           'video')
         print('Video: ',video_accuracy)
         
         #transcript prediction
@@ -68,8 +74,11 @@ def late_fusion(audio_input_df,
         [transcript_prediction,transcript_accuracy] = get_prediction(transcript_input_df,
                                                                      transcript_features,
                                                                      train_index,
-                                                                     test_index)
+                                                                     test_index,
+                                                                     experiment,
+                                                                     'transcript')
         print('Transcript: ',transcript_accuracy)
+        
         
         
         late_fusion_list = []
@@ -110,7 +119,7 @@ def late_fusion(audio_input_df,
         
         print('+'*20)
         
-def get_prediction(input_df,features,train_index,test_index):
+def get_prediction(input_df,features,train_index,test_index,experiment,modality):
     
     train_data = []
 
@@ -167,48 +176,18 @@ def get_prediction(input_df,features,train_index,test_index):
     print "F1:  ",f1
     print con_matrix
 
-    # #print('shape of the input dataframe : ', input_df.shape)
-    # #print('number of features : ', len(features))
-    # train_data = []
-
-    # for video_num in train_index: 
-    #     train_data.append(input_df[input_df.video_num == video_num])
-
-    # train_data = pd.concat(train_data)
-
-    # #test data 
-
-    # test_data = []
-
-    # for video_num in test_index: 
-    #     test_data.append(input_df[input_df.video_num == video_num])
-
-    # test_data = pd.concat(test_data)
-
-    # clf = GaussianNB()
-    # test_results=list()
-    # clf.fit(train_data[features].values, train_data.laughter_value.values)
-    # for line in train_data[features].values:
-    #     pred = clf.predict([line])[0]
-    #     test_results.append(pred)
-    # accuracy = accuracy_score(train_data.laughter_value.values,test_results)
-    # print "\n\nTraining accuracy= ",accuracy
 
 
-    # clf = GaussianNB()
-    # test_results=list()
-    # clf.fit(train_data[features].values, train_data.laughter_value.values)
-    # for line in test_data[features].values:
-    #     pred = clf.predict([line])[0]
-    #     test_results.append(pred)
-    # accuracy = accuracy_score(test_data.laughter_value.values,test_results)
-
-
-    # con_matrix = confusion_matrix(test_results, test_data.laughter_value.values)
-    # f1 = f1_score(test_results, test_data.laughter_value.values, average='macro')
-    # print "F1:  ",f1
-    # print con_matrix
-
+    confPred = pd.DataFrame(clf.predict_proba(test_data[features].values))
+    td_s = pd.Series(list(test_data.video_num),index=confPred.index)    
+    #print('video_number : ', list(td_s))
+    confPred["video_number"]=td_s
+    confPred["prediction"] = test_results
+    #confPred.columns = ['video_number','0','1','2','prediction']   
+    #print td_s
+    writer = pd.ExcelWriter("./conf_naiveBayes"+'_' +modality+ '_' + str(experiment) + ".xlsx")
+    confPred.to_excel(writer,'Sheet1')
+    writer.save()
     
     return [test_results,accuracy]       
 

@@ -43,11 +43,11 @@ def late_fusion(audio_input_df,
         early_fusion_features = audio_features + video_features + transcript_features
         
         [early_fusion_prediction,early_fusion_accuracy] = get_prediction(early_fusion_df,
-                                                                        early_fusion_features,
-                                                                        train_index,
-                                                                        test_index,
-									experiment,
-									'early_fusion')
+                                                                         early_fusion_features,
+                                                                         train_index,
+                                                                         test_index,
+									                                     experiment,
+									                                     'early_fusion')
 
         print("Early fusion : ",early_fusion_accuracy)
         
@@ -57,8 +57,8 @@ def late_fusion(audio_input_df,
                                                            audio_features,
                                                            train_index,
                                                            test_index,
-							   experiment,
-							   'audio')
+							                               experiment,
+							                               'audio')
         
         print('Audio: ',audio_accuracy)
         
@@ -68,8 +68,8 @@ def late_fusion(audio_input_df,
                                                            video_features,
                                                            train_index,
                                                            test_index,
-							   experiment,
-							   'video')
+							                               experiment,
+							                               'video')
         print('Video: ',video_accuracy)
         
         #transcript prediction
@@ -78,8 +78,8 @@ def late_fusion(audio_input_df,
                                                                      transcript_features,
                                                                      train_index,
                                                                      test_index,
-								     experiment,
-								     'transcript')
+								                                     experiment,
+								                                     'transcript')
         print('Transcript: ',transcript_accuracy)
         
         
