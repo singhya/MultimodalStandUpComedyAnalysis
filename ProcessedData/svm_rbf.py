@@ -7,7 +7,6 @@ from sklearn import linear_model
 from sklearn import svm
 import math
 
-
 def get_features(columns):
     segmentation_annotation_labels = ['video', 'laughter_start', 'laughter_end', 'laughter_value',
        'start_segment_s', 'end_segment_s', 'start_segment_frame',
@@ -121,10 +120,36 @@ def get_prediction(input_df,features,train_index,test_index):
     #print('number of features : ', len(features))
     train_data = []
 
+
     for video_num in train_index: 
         train_data.append(input_df[input_df.video_num == video_num])
+    train_data2 = pd.concat(train_data)
+    train_data3 = train_data2[features].values
+    train_label3 = train_data2.laughter_value.values
 
-    train_data = pd.concat(train_data)
+    lengthTr=len(train_data3)
+
+
+    train_data = []
+    train_label = []
+    validate_data = []
+    validate_label = []
+
+    #validation data
+    i=0
+    for i in range(0,((3*lengthTr)/4)):
+        train_data.append(train_data3[i])
+        train_label.append(train_label3[i])
+    for i in range(((3*lengthTr)/4),lengthTr):
+        validate_data.append(train_data3[i])
+        validate_label.append(train_label3[i])
+    # print len(train_data)
+    # print len(train_label)
+    # print len(validate_data)
+    # print len(validate_label)
+
+
+
 
     #test data 
 
@@ -136,32 +161,35 @@ def get_prediction(input_df,features,train_index,test_index):
     test_data = pd.concat(test_data)
 
    
-    k_fold = KFold(n_splits=4)
+    clf = svm.SVC()
     accuracy=list()
     for c in [0.001,0.01,0.1,1,10,100]:
-        clf = svm.LinearSVC(C=c)
-        accuracy.append(statistics.mean(cross_val_score(clf,train_data[features].values,train_data.laughter_value.values,cv=k_fold,n_jobs=-1)))
-    # print "Accuracy in validation(max): ",max(accuracy)
-    # print "Accuracy in validation(average): ",statistics.mean(accuracy)
+        validation_result=list()
+        clf.set_params(C=c, kernel="rbf")
+        clf.fit(train_data, train_label)
+        correct_classification = 0
+        i=0
+        for line in validate_data:
+            validation_result.append(clf.predict([line])[0])
+        accuracy.append(accuracy_score(validate_label,validation_result))
+
     cMax=math.pow(10,(accuracy.index(max(accuracy))-3))
     # print "Hyperparameter(c) for max accuracy = ",cMax
 
-    clf = svm.LinearSVC()
+    clf = svm.SVC(C=cMax,kernel="rbf")
     test_results=list()
-    clf.set_params(C=cMax)
-    clf.fit(train_data[features].values, train_data.laughter_value.values)
-
+    clf.fit(train_data, train_label)
     for line in test_data[features].values:
         test_results.append(clf.predict([line])[0])
     accuracy = accuracy_score(test_data.laughter_value.values,test_results)
     
-
     con_matrix = confusion_matrix(test_results, test_data.laughter_value.values)
     f1 = f1_score(test_results, test_data.laughter_value.values, average='macro')
     print "F1:  ",f1
     print con_matrix
 
     print "\n\n\n"
+
 
 
     return [test_results,accuracy]       

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import KFold
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
 from sklearn import linear_model
 from sklearn.naive_bayes import GaussianNB
 
@@ -138,6 +138,15 @@ def get_prediction(input_df,features,train_index,test_index):
         test_results.append(pred)
     accuracy = accuracy_score(test_data.laughter_value.values,test_results)
 
+
+    con_matrix = confusion_matrix(test_results, test_data.laughter_value.values)
+    f1 = f1_score(test_results, test_data.laughter_value.values, average='macro')
+    print "F1:  ",f1
+    print con_matrix
+
+    print "\n\n\n"
+
+    
     return [test_results,accuracy]       
 
 
