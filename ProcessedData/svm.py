@@ -45,7 +45,9 @@ def late_fusion(audio_input_df,
         [early_fusion_prediction,early_fusion_accuracy] = get_prediction(early_fusion_df,
                                                                         early_fusion_features,
                                                                         train_index,
-                                                                        test_index)
+                                                                        test_index,
+									experiment,
+									'early_fusion')
 
         print("Early fusion : ",early_fusion_accuracy)
         
@@ -54,7 +56,9 @@ def late_fusion(audio_input_df,
         [audio_prediction,audio_accuracy] = get_prediction(audio_input_df,
                                                            audio_features,
                                                            train_index,
-                                                           test_index)
+                                                           test_index,
+							   experiment,
+							   'audio')
         
         print('Audio: ',audio_accuracy)
         
@@ -63,7 +67,9 @@ def late_fusion(audio_input_df,
         [video_predition, video_accuracy] = get_prediction(video_input_df,
                                                            video_features,
                                                            train_index,
-                                                           test_index)
+                                                           test_index,
+							   experiment,
+							   'video')
         print('Video: ',video_accuracy)
         
         #transcript prediction
@@ -71,7 +77,9 @@ def late_fusion(audio_input_df,
         [transcript_prediction,transcript_accuracy] = get_prediction(transcript_input_df,
                                                                      transcript_features,
                                                                      train_index,
-                                                                     test_index)
+                                                                     test_index,
+								     experiment,
+								     'transcript')
         print('Transcript: ',transcript_accuracy)
         
         
@@ -115,7 +123,7 @@ def late_fusion(audio_input_df,
         
         print('+'*20)
         
-def get_prediction(input_df,features,train_index,test_index):
+def get_prediction(input_df,features,train_index,test_index,experiment,modality):
     
     #print('shape of the input dataframe : ', input_df.shape)
     #print('number of features : ', len(features))
@@ -163,20 +171,26 @@ def get_prediction(input_df,features,train_index,test_index):
     td_s = test_data.video_num
     confPred = pd.DataFrame(clf.decision_function(test_data[features].values))
     confPred["video_number"]=td_s
+    confPred["prediction"] = test_results
+    confPred.columns = ['video_number','0','1','2','prediction']	
     # print td_s
+    writer = pd.ExcelWriter("./conf_svm"+'_' +modality+ '_' + str(experiment) + ".xlsx")
+    confPred.to_excel(writer,'Sheet1')
+    writer.save()
+
     print confPred
     return [test_results,accuracy]       
 
 
 def main():
 #1135-1138
-	opensmile_std_input_df = pd.read_excel("Audio/open_face_accoustic_std.xlsx")
-	opensmile_mean_input_df = pd.read_excel("Audio/open_face_accoustic_means.xlsx")
-	transcript_input_df = pd.read_csv("Transcript/segment_annotation_transcript_features.csv")
-	video_max_df = pd.read_csv("Video/feature_annotation_max.csv")
-	video_min_df = pd.read_csv("Video/feature_annotation_min.csv")
-	video_mean_df = pd.read_csv("Video/feature_annotation_mean.csv")
-	video_std_df = pd.read_csv("Video/feature_annotation_sd.csv")
+	opensmile_std_input_df = pd.read_excel("./Audio/open_face_accoustic_std.xlsx")
+	opensmile_mean_input_df = pd.read_excel("./Audio/open_face_accoustic_means.xlsx")
+	transcript_input_df = pd.read_csv("./Transcript/segment_annotation_transcript_features.csv")
+	video_max_df = pd.read_csv("./Video/feature_annotation_max.csv")
+	video_min_df = pd.read_csv("./Video/feature_annotation_min.csv")
+	video_mean_df = pd.read_csv("./Video/feature_annotation_mean.csv")
+	video_std_df = pd.read_csv("./Video/feature_annotation_sd.csv")
 
 	num_dict = {}
 	artists = list(transcript_input_df.video.unique())
