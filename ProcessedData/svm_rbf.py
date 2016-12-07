@@ -169,7 +169,7 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
     test_data = pd.concat(test_data)
 
    
-    clf = svm.SVC()
+    clf = svm.SVC(probability=True)
     accuracy=list()
     for c in [0.001,0.01,0.1,1,10,100]:
         validation_result=list()
@@ -184,7 +184,7 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
     cMax=math.pow(10,(accuracy.index(max(accuracy))-3))
     print "Hyperparameter(c) for max accuracy = ",cMax
 
-    clf = svm.SVC(C=cMax,kernel="rbf")
+    clf = svm.SVC(C=cMax,kernel="rbf",probability=True)
     test_results=list()
     clf.fit(train_data, train_label)
     for line in test_data[features].values:
@@ -196,7 +196,7 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
     print "F1:  ",f1
     print con_matrix
 
-    confPred = pd.DataFrame(clf.decision_function(test_data[features].values))
+    confPred = pd.DataFrame(clf.predict_proba(test_data[features].values))
     td_s = pd.Series(list(test_data.video_num),index=confPred.index)    
     #print('video_number : ', list(td_s))
     confPred["video_number"]=td_s
