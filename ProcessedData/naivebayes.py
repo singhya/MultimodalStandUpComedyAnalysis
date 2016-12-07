@@ -112,16 +112,30 @@ def late_fusion(audio_input_df,
         
 def get_prediction(input_df,features,train_index,test_index):
     
-    #print('shape of the input dataframe : ', input_df.shape)
-    #print('number of features : ', len(features))
     train_data = []
+
 
     for video_num in train_index: 
         train_data.append(input_df[input_df.video_num == video_num])
+    train_data2 = pd.concat(train_data)
+    train_data3 = train_data2[features].values
+    train_label3 = train_data2.laughter_value.values
 
-    train_data = pd.concat(train_data)
+    lengthTr=len(train_data3)
 
-    #test data 
+    train_data = []
+    train_label = []
+    validate_data = []
+    validate_label = []
+
+    #validation data
+    i=0
+    for i in range(0,((3*lengthTr)/4)):
+        train_data.append(train_data3[i])
+        train_label.append(train_label3[i])
+    for i in range(((3*lengthTr)/4),lengthTr):
+        validate_data.append(train_data3[i])
+        validate_label.append(train_label3[i])
 
     test_data = []
 
@@ -130,21 +144,70 @@ def get_prediction(input_df,features,train_index,test_index):
 
     test_data = pd.concat(test_data)
 
+
     clf = GaussianNB()
     test_results=list()
-    clf.fit(train_data[features].values, train_data.laughter_value.values)
+    clf.fit(train_data, train_label)
+    for line in validate_data:
+        pred = clf.predict([line])[0]
+        test_results.append(pred)
+    accuracy = accuracy_score(validate_label, test_results)
+    print "\n\nValidation accuracy= ",accuracy
+
+    clf = GaussianNB()
+    test_results=list()
+    clf.fit(train_data, train_label)
     for line in test_data[features].values:
         pred = clf.predict([line])[0]
         test_results.append(pred)
     accuracy = accuracy_score(test_data.laughter_value.values,test_results)
-
 
     con_matrix = confusion_matrix(test_results, test_data.laughter_value.values)
     f1 = f1_score(test_results, test_data.laughter_value.values, average='macro')
     print "F1:  ",f1
     print con_matrix
 
-    print "\n\n\n"
+    # #print('shape of the input dataframe : ', input_df.shape)
+    # #print('number of features : ', len(features))
+    # train_data = []
+
+    # for video_num in train_index: 
+    #     train_data.append(input_df[input_df.video_num == video_num])
+
+    # train_data = pd.concat(train_data)
+
+    # #test data 
+
+    # test_data = []
+
+    # for video_num in test_index: 
+    #     test_data.append(input_df[input_df.video_num == video_num])
+
+    # test_data = pd.concat(test_data)
+
+    # clf = GaussianNB()
+    # test_results=list()
+    # clf.fit(train_data[features].values, train_data.laughter_value.values)
+    # for line in train_data[features].values:
+    #     pred = clf.predict([line])[0]
+    #     test_results.append(pred)
+    # accuracy = accuracy_score(train_data.laughter_value.values,test_results)
+    # print "\n\nTraining accuracy= ",accuracy
+
+
+    # clf = GaussianNB()
+    # test_results=list()
+    # clf.fit(train_data[features].values, train_data.laughter_value.values)
+    # for line in test_data[features].values:
+    #     pred = clf.predict([line])[0]
+    #     test_results.append(pred)
+    # accuracy = accuracy_score(test_data.laughter_value.values,test_results)
+
+
+    # con_matrix = confusion_matrix(test_results, test_data.laughter_value.values)
+    # f1 = f1_score(test_results, test_data.laughter_value.values, average='macro')
+    # print "F1:  ",f1
+    # print con_matrix
 
     
     return [test_results,accuracy]       

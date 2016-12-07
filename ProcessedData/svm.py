@@ -160,9 +160,11 @@ def get_prediction(input_df,features,train_index,test_index):
     print "F1:  ",f1
     print con_matrix
 
-    
-
-
+    td_s = test_data.video_num
+    confPred = pd.DataFrame(clf.decision_function(test_data[features].values))
+    confPred["video_number"]=td_s
+    # print td_s
+    print confPred
     return [test_results,accuracy]       
 
 
