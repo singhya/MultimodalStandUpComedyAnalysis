@@ -142,8 +142,8 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
         test_data.append(input_df[input_df.video_num == video_num])
 
     test_data = pd.concat(test_data)
-
-   
+    #print('test_data : ', list(test_data.video_num.unique()))
+    #print('test_data_video_num', list(test_data.video_num))	
     k_fold = KFold(n_splits=4)
     accuracy=list()
     for c in [0.001,0.01,0.1,1,10,100]:
@@ -155,7 +155,7 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
     print "Hyperparameter(c) for highest validation accuracy = ",cMax
 
     clf = svm.LinearSVC()
-    test_results=list()
+    test_results=list()	
     clf.set_params(C=cMax)
     clf.fit(train_data[features].values, train_data.laughter_value.values)
 
@@ -168,17 +168,21 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
     print "F1:  ",f1
     print con_matrix
 
-    td_s = test_data.video_num
+
+    #print('experiment : ',experiment, " modality : ",modality)
+    
     confPred = pd.DataFrame(clf.decision_function(test_data[features].values))
+    td_s = pd.Series(list(test_data.video_num),index=confPred.index)	
+    #print('video_number : ', list(td_s))
     confPred["video_number"]=td_s
     confPred["prediction"] = test_results
-    confPred.columns = ['video_number','0','1','2','prediction']	
-    # print td_s
+    #confPred.columns = ['video_number','0','1','2','prediction']	
+    #print td_s
     writer = pd.ExcelWriter("./conf_svm"+'_' +modality+ '_' + str(experiment) + ".xlsx")
     confPred.to_excel(writer,'Sheet1')
     writer.save()
 
-    print confPred
+    #print confPred
     return [test_results,accuracy]       
 
 
