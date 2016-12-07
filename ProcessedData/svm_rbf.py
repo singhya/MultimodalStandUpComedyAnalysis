@@ -201,6 +201,7 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
     #print('video_number : ', list(td_s))
     confPred["video_number"]=td_s
     confPred["prediction"] = test_results
+    confPred["actual"] = test_data.laughter_value.values
     #confPred.columns = ['video_number','0','1','2','prediction']   
     #print td_s
     writer = pd.ExcelWriter("./conf_rbf_SVM"+'_' +modality+ '_' + str(experiment) + ".xlsx")

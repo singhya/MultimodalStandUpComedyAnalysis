@@ -171,7 +171,7 @@ def get_prediction(input_df,features,train_index,test_index,experiment,modality)
 
     #print('experiment : ',experiment, " modality : ",modality)
     
-    confPred = pd.DataFrame(clf.decision_function(test_data[features].values))
+    confPred = pd.DataFrame(clf.predict_proba(test_data[features].values))
     td_s = pd.Series(list(test_data.video_num),index=confPred.index)	
     #print('video_number : ', list(td_s))
     confPred["video_number"]=td_s
