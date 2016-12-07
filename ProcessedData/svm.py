@@ -31,7 +31,7 @@ def late_fusion(audio_input_df,
         print('Experiment : ', experiment)
         experiment = experiment + 1 
 
-        #early fusion 
+        #early fusion
 
         df0 = audio_input_df
         df1 = video_input_df[video_features]#video_std_df[video_std_features]
@@ -141,10 +141,10 @@ def get_prediction(input_df,features,train_index,test_index):
     for c in [0.001,0.01,0.1,1,10,100]:
         clf = svm.LinearSVC(C=c)
         accuracy.append(statistics.mean(cross_val_score(clf,train_data[features].values,train_data.laughter_value.values,cv=k_fold,n_jobs=-1)))
-    # print "Accuracy in validation(max): ",max(accuracy)
+    print "\n\nAccuracy in validation: ",max(accuracy)
     # print "Accuracy in validation(average): ",statistics.mean(accuracy)
     cMax=math.pow(10,(accuracy.index(max(accuracy))-3))
-    # print "Hyperparameter(c) for max accuracy = ",cMax
+    print "Hyperparameter(c) for highest validation accuracy = ",cMax
 
     clf = svm.LinearSVC()
     test_results=list()
@@ -155,13 +155,12 @@ def get_prediction(input_df,features,train_index,test_index):
         test_results.append(clf.predict([line])[0])
     accuracy = accuracy_score(test_data.laughter_value.values,test_results)
     
-
     con_matrix = confusion_matrix(test_results, test_data.laughter_value.values)
     f1 = f1_score(test_results, test_data.laughter_value.values, average='macro')
     print "F1:  ",f1
     print con_matrix
 
-    print "\n\n\n"
+    
 
 
     return [test_results,accuracy]       

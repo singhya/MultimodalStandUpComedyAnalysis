@@ -172,9 +172,9 @@ def get_prediction(input_df,features,train_index,test_index):
         for line in validate_data:
             validation_result.append(clf.predict([line])[0])
         accuracy.append(accuracy_score(validate_label,validation_result))
-
+    print "\n\nAccuracy in validation: ",max(accuracy)
     cMax=math.pow(10,(accuracy.index(max(accuracy))-3))
-    # print "Hyperparameter(c) for max accuracy = ",cMax
+    print "Hyperparameter(c) for max accuracy = ",cMax
 
     clf = svm.SVC(C=cMax,kernel="rbf")
     test_results=list()
@@ -188,7 +188,6 @@ def get_prediction(input_df,features,train_index,test_index):
     print "F1:  ",f1
     print con_matrix
 
-    print "\n\n\n"
 
 
 
